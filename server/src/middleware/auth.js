@@ -2,7 +2,7 @@ import config from 'config';
 import { respondWithError } from '../helpers/messageResponse';
 import { logger } from '../helpers/logger';
 import { ErrorCodes } from '../helpers/constants';
-import { refreshToken } from '../components/auth/authController';
+import { refreshToken } from '../modules/auth/authController';
 
 const jwt = require('jsonwebtoken');
 
@@ -31,7 +31,7 @@ export function authenticate(type = 'token') {
 
             // Token valid, set user to request
             req.loginUser = user;
-            if (isRefresh) req.refreshToken = token;
+            if (isRefresh) req.oldRefreshToken = token;
             return next();
         } catch (e) {
             logger.error(`Func: authenticate ; error in authenticate: ${e.message}`);

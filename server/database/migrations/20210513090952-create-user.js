@@ -6,7 +6,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER.UNSIGNED
+        type: Sequelize.INTEGER
       },
       fullName: {
         type: Sequelize.STRING
@@ -21,12 +21,19 @@ module.exports = {
         type: Sequelize.STRING
       },
       birthday: {
+        allowNull: false,
+        defaultValue: new Date(),
         type: Sequelize.DATE
       },
       gender: {
         allowNull: false,
         type: Sequelize.ENUM('male', 'female', 'other'),
         defaultValue: 'other',
+      },
+      role: {
+        allowNull: false,
+        type: Sequelize.ENUM('admin', 'supervisor', 'school_manager', 'teacher', 'business_unit_leader', 'parttime_teacher'),
+        defaultValue: 'admin',
       },
       createdAt: {
         allowNull: false,

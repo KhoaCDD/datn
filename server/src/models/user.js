@@ -14,11 +14,17 @@ module.exports = (sequelize, DataTypes) => {
         },
         birthday: {
             type: DataTypes.DATE,
+            defaultValue: new Date(),
         },
         gender: {
             allowNull: false,
             type: DataTypes.ENUM('male', 'female', 'other'),
             defaultValue: 'other',
+        },
+        role: {
+            allowNull: false,
+            type: DataTypes.ENUM('admin', 'supervisor', 'school_manager', 'teacher', 'business_unit_leader', 'parttime_teacher'),
+            defaultValue: 'admin',
         },
         createdBy: {
             type: DataTypes.INTEGER(10).UNSIGNED,
@@ -32,7 +38,18 @@ module.exports = (sequelize, DataTypes) => {
         tableName: 'users',
     });
     User.associate = function (models) {
-        // define association of this model
+        User.belongsToMany(models.Area, {
+            as: 'areas',
+            through: models.AreaUser,
+            otherKey: 'areaId',
+            foreignKey: 'userId',
+        });
+        User.belongsToMany(models.School, {
+            as: 'schools',
+            thourgh: models.SchoolUser,
+            otherKey: 'schoolId',
+            foreignKey: 'userId'            
+        });
     };
     return User;
 };
