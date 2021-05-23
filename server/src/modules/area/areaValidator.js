@@ -10,6 +10,9 @@ const Joi = BaseJoi.extend(Extension);
 export async function createValidator(req, res, next) {
     const { body } = req;
     const validSchema = Joi.object().keys({
+        name: Joi.string().max(255).required(),
+        description: Joi.string().max(255).allow('').allow(null),
+        managerIds: Joi.array().items(Joi.number()).allow([]).required(),
     });
     const result = Joi.validate(body, validSchema);
 

@@ -5,17 +5,17 @@ import {
     logSystemError,
     respondWithError
 } from '../../helpers/messageResponse';
-import { getUnit, getSchools } from './unitService'; 
+import { getAreas, getSchools } from './areaService'; 
 import _ from 'lodash';
 
 const models = require('../../models');
-const unitAttributes = ['id', 'description', 'name'];
+const areaAttributes = ['id', 'description', 'name'];
 
-export async function getUnitList(req, res) {
+export async function getAreaList(req, res) {
     try {
-        const unit = await getUnit(req.query);
+        const areas = await getAreas(req.query);
         return res.json(
-            respondSuccess({ unit }),
+            respondSuccess({ items: areas.rows, totalItems: areas.count }),
         );
     } catch (error) {
         return logSystemError(res, error, 'userController - getList');

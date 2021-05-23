@@ -1,18 +1,25 @@
 import _ from 'lodash';
-import { error } from 'winston';
 
 const models = require('../../models');
-const unitAttributes = ['id', 'description', 'name'];
+const areaAttributes = ['id', 'description', 'name'];
 
-export async function  getUnit ( { id = '', name ='', page=1, limit=10 } ) {
+export async function  getAreas ( { name ='', page=1, limit=10 } ) {
   try {
-    const unit = await models.Unit.findOne({
-        where : {
-            id: id
+    const areas = await models.Area.findAndCountAll({
+        attributes: areaAttributes,
+        raw: true,
+        where: {
+            name: {
+                [models.Op.like]: `%${name}%`
+            },
         },
-        include: 'schoolSystem'
+        limit: +limit,
+        offset: (page-1)* +limit,
+        order: [
+            ['updatedAt', 'DESC']
+        ],
     });
-    return unit;
+    return areas;
   } catch (error) {
       throw error;
   }
